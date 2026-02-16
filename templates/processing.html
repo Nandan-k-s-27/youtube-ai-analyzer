@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Processing — YouTube Summarizer</title>
+    <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ 
+            startOnLoad: false,
+            theme: document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default',
+            mindmap: {
+                padding: 20,
+                maxNodeWidth: 200
+            }
+        });
+        window.mermaid = mermaid;
+    </script>
+    <link rel="stylesheet" href="/static/shared.css">
+    <link rel="stylesheet" href="/static/mindmap.css">
+    <script src="/static/global.js"></script>
+    <style>
+        .video-title {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+            display: none;
+            animation: fadeIn .4s ease;
+            transition: color .4s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        .progress-wrap {
+            margin-bottom: 32px;
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 6px;
+            background: var(--border);
+            border-radius: 6px;
+            overflow: hidden;
+            transition: background .4s;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--accent), var(--accent-hover, var(--accent)));
+            border-radius: 6px;
+            transition: width .6s ease;
+            position: relative;
+        }
+
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .35), transparent);
+            animation: shimmer 1.6s infinite;
+        }
+
+        @keyframes shimmer {
+            0% {
+                transform: translateX(-100%)
+            }
+
+            100% {
+                transform: translateX(100%)
+            }
+        }
+
+        .progress-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            font-size: .82rem;
+            color: var(--text-secondary);
+            transition: color .4s;
+        }
+
+        .quick-summary {
+            display: none;
+            animation: fadeIn .4s ease;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-sm);
+            transition: all .4s;
+        }
+
+        .quick-summary:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .quick-summary h3 {
+            font-size: .82rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            margin-bottom: 10px;
+        }
+
+        .quick-summary p {
+            line-height: 1.7;
+            font-size: .92rem;
+        }
+
+        .qs-note {
+            font-size: .8rem;
+            color: var(--text-dim, var(--text-secondary));
+            margin-top: 12px;
+        }
+
+        .results {
+            display: none;
+            animation: pageEntry .5s ease;
+        }
+
+        .loader {
+            display: flex;
+            gap: 6px;
+            justify-content: center;
+            margin: 28px 0;
+        }
+
+        .loader span {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--accent);
+            animation: pulse 1.2s ease-in-out infinite;
+        }
+
+        .loader span:nth-child(2) {
+            animation-delay: .15s;
+        }
+
+        .loader span:nth-child(3) {
+            animation-delay: .3s;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            80%,
+            100% {
+                transform: scale(.5);
+                opacity: .3
+            }
+
+            40% {
+                transform: scale(1.1);
+                opacity: 1
+            }
+        }
+
+        .error-box {
+            background: var(--danger-bg, #fef0f0);
+            border: 1px solid var(--danger-border, #fdd);
+            border-radius: 14px;
+            padding: 20px;
+            color: var(--danger, #e12120);
+            display: none;
+            margin-bottom: 20px;
+            animation: shake .4s ease;
+            transition: all .4s;
+        }
+
+        .sticky-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--nav-bg);
+            border-bottom: 1px solid var(--border);
+            padding: 10px 20px;
+            z-index: 1000;
+            transition: opacity .25s ease, transform .25s ease;
+            box-shadow: var(--shadow-sm);
+            opacity: 0;
+            transform: translateY(-100%);
+            pointer-events: none;
+        }
+
+        .sticky-header.visible {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .sticky-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .sticky-brand {
+            font-size: 18px;
+        }
+
+        .sticky-status {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .sticky-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .sticky-new {
+            padding: 8px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+        }
+
+        .quiz-controls {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .transcript-controls {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .results-tabs {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 14px;
+        }
+
+        .results-tab-btn {
+            padding: 8px 14px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            font-size: .86rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all .2s;
+        }
+
+        .results-tab-btn:hover {
+            border-color: var(--accent);
+            color: var(--text);
+        }
+
+        .results-tab-btn.active {
+            background: var(--accent-glow);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .tab-panel {
+            display: none;
+        }
+
+        .tab-panel.active {
+            display: block;
+            animation: fadeIn .25s ease;
+        }
+
+        .quiz-select {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 6px 10px;
+            font-size: .85rem;
+            background: var(--bg-card);
+            color: var(--text);
+            min-height: 36px;
+        }
+
+        .quiz-select option {
+            background: var(--bg-card);
+            color: var(--text);
+        }
+
+        .quiz-meta {
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 12px;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--bg-soft, var(--bg));
+        }
+
+        .quiz-score {
+            font-size: .9rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .quiz-progress {
+            font-size: .85rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .quiz-loading {
+            display: none;
+            margin-bottom: 12px;
+            color: var(--text-secondary);
+            font-size: .9rem;
+        }
+
+        .quiz-list {
+            display: grid;
+            gap: 12px;
+        }
+
+        .quiz-item {
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: var(--bg-card);
+            padding: 14px;
+            transition: border-color .2s, box-shadow .2s;
+        }
+
+        .quiz-item h3 {
+            font-size: .95rem;
+            margin-bottom: 10px;
+            color: var(--text);
+            line-height: 1.5;
+        }
+
+        .quiz-options {
+            display: grid;
+            gap: 8px;
+        }
+
+        .quiz-option {
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--bg-soft, var(--bg));
+            color: var(--text);
+            padding: 10px 12px;
+            text-align: left;
+            cursor: pointer;
+            transition: all .2s;
+            font-size: .9rem;
+            font-weight: 500;
+            opacity: 1;
+            -webkit-text-fill-color: currentColor;
+        }
+
+        [data-theme="dark"] .quiz-option {
+            background: #1f2732;
+            color: #e6edf3;
+            border-color: #36404a;
+        }
+
+        .quiz-option:hover {
+            border-color: var(--accent);
+            background: var(--bg-card);
+        }
+
+        .quiz-option.correct {
+            background: var(--success-bg);
+            border-color: var(--success);
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .quiz-option.wrong {
+            background: var(--danger-bg);
+            border-color: var(--danger);
+            color: var(--text);
+        }
+
+        .quiz-option[disabled] {
+            cursor: not-allowed;
+            opacity: 1;
+            color: var(--text);
+            -webkit-text-fill-color: currentColor;
+        }
+
+        [data-theme="dark"] .quiz-meta {
+            background: #1f2732;
+            border-color: #36404a;
+        }
+
+        .quiz-status {
+            margin-top: 10px;
+            font-size: .82rem;
+            color: var(--text-secondary);
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0)
+            }
+
+            20% {
+                transform: translateX(-6px)
+            }
+
+            40% {
+                transform: translateX(6px)
+            }
+
+            60% {
+                transform: translateX(-4px)
+            }
+
+            80% {
+                transform: translateX(4px)
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Sticky Header with Quick Actions -->
+    <div id="stickyHeader" class="sticky-header surface-glass">
+        <div class="sticky-inner">
+            <div class="row-inline">
+                <span class="sticky-brand">YouTube Summarizer</span>
+                <span id="stickyStatus" class="sticky-status">Processing...</span>
+            </div>
+            <div class="sticky-actions">
+                <a href="/" class="btn-primary sticky-new">New Summary</a>
+                <button class="btn-sm" onclick="scrollToResults()" id="scrollToResultsBtn" style="display: none;">View Results</button>
+                <button class="btn-sm" onclick="downloadPDF()" id="stickyDownloadBtn" style="display: none;">Download PDF</button>
+                <button class="btn-sm" onclick="scrollToTop()" id="stickyTopBtn" style="display: none;">Back to Top</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="bubbles">
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <nav>
+        <a href="/" class="brand">YouTube Summarizer</a>
+        <button class="theme-toggle" id="themeToggle" title="Toggle theme">
+            <span class="theme-icon sun">☀️</span>
+            <span class="theme-icon moon">🌙</span>
+        </button>
+    </nav>
+    <main>
+        <h1>Processing video…</h1>
+        <div id="videoTitle" class="video-title"></div>
+        <div class="progress-wrap">
+            <div class="progress-track">
+                <div id="bar" class="progress-bar"></div>
+            </div>
+            <div class="progress-meta"><span id="status">Initializing…</span><span id="pct">0%</span></div>
+        </div>
+        <div class="loader" id="loader"><span></span><span></span><span></span></div>
+        <div id="quickBox" class="quick-summary">
+            <h3>Quick Summary</h3>
+            <p id="quickText"></p>
+            <p class="qs-note">Full summary in progress…</p>
+        </div>
+        <div id="errorBox" class="error-box"></div>
+        <div id="results" class="results">
+            <div class="stats-row">
+                <div class="stat">
+                    <div class="stat-num" id="tw">0</div>
+                    <div class="stat-label">Total words</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-num" id="sw">0</div>
+                    <div class="stat-label">Summary words</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-num" id="cr">0%</div>
+                    <div class="stat-label">Compression</div>
+                </div>
+            </div>
+            <div class="results-tabs" id="resultsTabs" role="tablist" aria-label="Result sections">
+                <button class="results-tab-btn active" type="button" data-tab-target="summaryPanel" onclick="switchResultTab('summaryPanel', this)">Summary</button>
+                <button class="results-tab-btn" type="button" data-tab-target="mindmapPanel" onclick="switchResultTab('mindmapPanel', this)">Mind Map</button>
+                <button class="results-tab-btn" type="button" data-tab-target="quizPanel" onclick="switchResultTab('quizPanel', this)">Quiz</button>
+                <button class="results-tab-btn" type="button" data-tab-target="transcriptPanel" onclick="switchResultTab('transcriptPanel', this)">Transcript</button>
+            </div>
+
+            <div id="summaryPanel" class="tab-panel active">
+                <div class="section">
+                    <div class="section-head">
+                        <h2>Summary <span id="cacheBadge" class="cache-tag">Cached</span></h2>
+                        <button class="btn-sm" onclick="copy('summaryBox',this)">Copy</button>
+                    </div>
+                    <div id="summaryBox" class="content-box"></div>
+                </div>
+            </div>
+
+            <div id="quizPanel" class="tab-panel">
+                <div class="section" id="quizSection">
+                    <div class="section-head">
+                        <h2>Q & A Quiz</h2>
+                        <div class="quiz-controls">
+                            <select id="quizCount" class="quiz-select" aria-label="Number of quiz questions">
+                                <option value="5">5 Questions</option>
+                                <option value="6">6 Questions</option>
+                                <option value="7">7 Questions</option>
+                                <option value="8">8 Questions</option>
+                                <option value="9">9 Questions</option>
+                                <option value="10">10 Questions</option>
+                            </select>
+                            <button class="btn-sm" id="generateQuizBtn" onclick="generateQuiz()">Generate Quiz</button>
+                            <button class="btn-sm" id="retryQuizBtn" onclick="retryQuiz()" style="display:none;">Retry Quiz</button>
+                        </div>
+                    </div>
+                    <div id="quizMeta" class="quiz-meta">
+                        <div id="quizScore" class="quiz-score">Score: 0 / 0</div>
+                        <div id="quizProgress" class="quiz-progress">Question 0 / 0</div>
+                    </div>
+                    <div id="quizLoading" class="quiz-loading">Generating transcript-based questions...</div>
+                    <div id="quizError" class="mindmap-error" style="display:none;"></div>
+                    <div id="quizList" class="quiz-list"></div>
+                </div>
+            </div>
+
+            <div id="mindmapPanel" class="tab-panel">
+                <div class="section">
+                    <div class="section-head">
+                        <h2>Visual Mind Map</h2>
+                        <div class="mindmap-actions">
+                            <button class="btn-sm" id="generateMindMapBtn" onclick="generateMindMap()">Generate Mind Map</button>
+                            <button class="btn-sm" id="downloadMindMapBtn" onclick="downloadMindMap()" style="display: none;">Download SVG</button>
+                        </div>
+                    </div>
+                    <div class="content-box" id="mindmap-container" style="display: none;">
+                        <div id="mindmap-loading" class="mindmap-loading">
+                            <div class="spinner"></div>
+                            <p>Generating mind map...</p>
+                        </div>
+                        <div id="mindmap-error" class="mindmap-error">
+                        </div>
+                        <div id="mindmap-content" class="mindmap-content">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="transcriptPanel" class="tab-panel">
+                <div class="section">
+                    <div class="section-head">
+                        <h2>Transcript</h2>
+                        <div class="transcript-controls">
+                            <button class="btn-sm" onclick="toggleTranscript(this)" id="toggleTranscriptBtn">Expand</button>
+                            <button class="btn-sm" onclick="copy('transcriptBox',this)">Copy</button>
+                        </div>
+                    </div>
+                    <div id="transcriptBoxWrap" style="display: none;">
+                        <div id="transcriptBox" class="content-box"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="actions">
+                <a href="/" class="btn-primary">New Summary</a>
+            </div>
+        </div>
+    </main>
+    <script>
+        var videoUrl = "{{url}}", percentage = parseInt("{{percentage}}"), socket = io();
+        var msgs = { checking_cache: 'Checking cache\u2026', fetching_metadata: 'Fetching metadata\u2026', generating_quick_summary: 'Generating quick summary\u2026', quick_summary_ready: 'Quick summary ready', fetching_transcript: 'Fetching transcript\u2026', downloading_audio: 'Downloading audio\u2026', transcribing_audio: 'Transcribing audio\u2026', generating_full_summary: 'Generating full summary\u2026', complete: 'Complete', error: 'Error' };
+        
+        // Sticky header functionality
+        let stickyHeader = document.getElementById('stickyHeader');
+        let scrollToResultsBtn = document.getElementById('scrollToResultsBtn');
+        let stickyDownloadBtn = document.getElementById('stickyDownloadBtn');
+        let stickyTopBtn = document.getElementById('stickyTopBtn');
+        let resultsSection = null;
+        
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 100) {
+                stickyHeader.classList.add('visible');
+            } else {
+                stickyHeader.classList.remove('visible');
+            }
+        });
+        
+        function scrollToResults() {
+            if (!resultsSection) resultsSection = document.getElementById('results');
+            if (resultsSection) {
+                resultsSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+        
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleTranscript(btn) {
+            const wrap = document.getElementById('transcriptBoxWrap');
+            if (!wrap) {
+                return;
+            }
+
+            const isHidden = wrap.style.display === 'none';
+            wrap.style.display = isHidden ? 'block' : 'none';
+            if (btn) {
+                btn.textContent = isHidden ? 'Collapse' : 'Expand';
+            }
+        }
+
+        function switchResultTab(tabId, tabBtn) {
+            const panels = document.querySelectorAll('.tab-panel');
+            const buttons = document.querySelectorAll('.results-tab-btn');
+
+            panels.forEach(function(panel) {
+                panel.classList.remove('active');
+            });
+
+            buttons.forEach(function(button) {
+                button.classList.remove('active');
+            });
+
+            const target = document.getElementById(tabId);
+            if (target) {
+                target.classList.add('active');
+            }
+
+            if (tabBtn) {
+                tabBtn.classList.add('active');
+            }
+        }
+        socket.on('connect', function () { socket.emit('start_processing', { url: videoUrl, percentage: percentage }); });
+        socket.on('progress_update', function (d) { 
+            document.getElementById('bar').style.width = (d.progress || 0) + '%'; 
+            document.getElementById('pct').textContent = (d.progress || 0) + '%'; 
+            document.getElementById('status').textContent = msgs[d.status] || 'Processing\u2026'; 
+            
+            // Update sticky header status
+            let stickyStatus = document.getElementById('stickyStatus');
+            if (stickyStatus) {
+                stickyStatus.textContent = msgs[d.status] || 'Processing\u2026';
+            }
+            
+            if (d.title) { 
+                var el = document.getElementById('videoTitle'); 
+                el.textContent = d.title; 
+                el.style.display = 'block'; 
+            } 
+            if (d.status === 'quick_summary_ready' && d.quick_summary) { 
+                document.getElementById('quickText').textContent = d.quick_summary; 
+                document.getElementById('quickBox').style.display = 'block'; 
+                document.getElementById('loader').style.display = 'none'; 
+            } 
+            if (d.cached) document.getElementById('cacheBadge').style.display = 'inline'; 
+        });
+        socket.on('processing_complete', function (r) { 
+            document.getElementById('bar').style.width = '100%'; 
+            document.getElementById('pct').textContent = '100%'; 
+            document.getElementById('status').textContent = 'Complete'; 
+            document.getElementById('loader').style.display = 'none'; 
+            document.getElementById('quickBox').style.display = 'none'; 
+            document.getElementById('summaryBox').textContent = r.summary; 
+            document.getElementById('transcriptBox').textContent = r.text; 
+            document.getElementById('transcriptBoxWrap').style.display = 'none';
+            document.getElementById('toggleTranscriptBtn').textContent = 'Expand';
+            document.getElementById('results').style.display = 'block'; 
+            switchResultTab('summaryPanel', document.querySelector('.results-tab-btn[data-tab-target="summaryPanel"]'));
+            
+            // Update sticky header
+            let stickyStatus = document.getElementById('stickyStatus');
+            if (stickyStatus) {
+                stickyStatus.textContent = '✅ Complete';
+                stickyStatus.style.color = 'var(--success, #10b981)';
+            }
+            scrollToResultsBtn.style.display = 'inline-block';
+            stickyDownloadBtn.style.display = 'inline-block';
+            stickyTopBtn.style.display = 'inline-block';
+            
+            var tw = (r.text || '').split(/\s+/).filter(Boolean).length; 
+            var sw = (r.summary || '').split(/\s+/).filter(Boolean).length; 
+            document.getElementById('tw').textContent = tw.toLocaleString(); 
+            document.getElementById('sw').textContent = sw.toLocaleString(); 
+            document.getElementById('cr').textContent = tw > 0 ? ((sw / tw) * 100).toFixed(1) + '%' : '0%'; 
+            if (r.cached) document.getElementById('cacheBadge').style.display = 'inline'; 
+            if (r.title) { 
+                var el = document.getElementById('videoTitle'); 
+                el.textContent = r.title; 
+                el.style.display = 'block'; 
+                document.querySelector('h1').textContent = 'Summary ready'; 
+            } 
+        });
+        socket.on('processing_error', function (d) { 
+            document.getElementById('status').textContent = 'Error'; 
+            document.getElementById('loader').style.display = 'none'; 
+            
+            // Update sticky header
+            let stickyStatus = document.getElementById('stickyStatus');
+            if (stickyStatus) {
+                stickyStatus.textContent = '❌ Error';
+                stickyStatus.style.color = 'var(--danger, #ef4444)';
+            }
+            
+            var eb = document.getElementById('errorBox'); 
+            eb.innerHTML = d.error + '<br><br><a href="/" class="btn-primary try-again-link">Try Again</a>'; 
+            eb.style.display = 'block'; 
+        });
+        function copy(id, btn) { navigator.clipboard.writeText(document.getElementById(id).textContent).then(function () { var o = btn.textContent; btn.textContent = 'Copied'; btn.classList.add('done'); setTimeout(function () { btn.textContent = o; btn.classList.remove('done'); }, 1500); }); }
+        function downloadPDF() { var jsPDF = window.jspdf.jsPDF; var doc = new jsPDF(); doc.setFont("Courier", "normal"); doc.setFontSize(11); var m = 15, y = m; function add(t, c) { doc.setFont(undefined, "bold"); doc.text(t, m, y); y += 6; doc.setFont(undefined, "normal"); var lines = doc.splitTextToSize(c, 180); for (var i = 0; i < lines.length; i++) { if (y > 280) { doc.addPage(); y = m; } doc.text(lines[i], m, y); y += 5; } y += 6; } add("YouTube Video Summary", ""); add("URL:", videoUrl); add("Summary Length:", percentage + "%"); add("Date:", new Date().toLocaleString()); add("Summary", document.getElementById('summaryBox').textContent.trim()); add("Mind Map", latestMindMapText ? latestMindMapText : "Mind map not generated yet."); add("Transcript", document.getElementById('transcriptBox').textContent.trim()); doc.save('summary_' + new Date().toISOString().split('T')[0] + '.pdf'); }
+
+        let mindMapGenerated = false;
+    let latestMindMapText = '';
+    let currentQuizQuestions = [];
+    let quizScore = 0;
+    let quizAnswered = 0;
+    let currentQuizIndex = 0;
+        
+        async function generateMindMap() {
+            if (mindMapGenerated) {
+                const container = document.getElementById('mindmap-container');
+                if (container.style.display === 'none') {
+                    container.style.display = 'block';
+                    document.getElementById('generateMindMapBtn').textContent = 'Hide Mind Map';
+                } else {
+                    container.style.display = 'none';
+                    document.getElementById('generateMindMapBtn').textContent = 'Show Mind Map';
+                }
+                return;
+            }
+
+            const btn = document.getElementById('generateMindMapBtn');
+            const container = document.getElementById('mindmap-container');
+            const loading = document.getElementById('mindmap-loading');
+            const error = document.getElementById('mindmap-error');
+            const content = document.getElementById('mindmap-content');
+            
+            container.style.display = 'block';
+            loading.style.display = 'block';
+            error.style.display = 'none';
+            content.style.display = 'none';
+            btn.disabled = true;
+            btn.textContent = 'Generating...';
+
+            try {
+                const text = document.getElementById('transcriptBox').textContent.trim();
+                const title = document.getElementById('videoTitle').textContent || 'Video Concept';
+                
+                const response = await fetch('/api/generate-mindmap', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ text: text, title: title })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Failed to generate mind map');
+                }
+
+                latestMindMapText = data.mindmap || '';
+
+                loading.style.display = 'none';
+                content.style.display = 'flex';
+                content.innerHTML = '<pre class="mermaid">' + data.mindmap + '</pre>';
+                
+                try {
+                    await window.mermaid.run({
+                        querySelector: '.mermaid'
+                    });
+                } catch (mermaidError) {
+                    console.error('Mermaid rendering error:', mermaidError);
+
+                    // Auto-fallback to a guaranteed-valid map instead of failing the UI
+                    const fallbackTitle = (document.getElementById('videoTitle').textContent || 'Video Summary')
+                        .replace(/[^a-zA-Z0-9 ]/g, ' ')
+                        .trim()
+                        .slice(0, 30) || 'Video Summary';
+
+                    const safeMindmap = [
+                        'mindmap',
+                        `  root((${fallbackTitle}))`,
+                        '    Overview',
+                        '      Main ideas',
+                        '      Key details',
+                        '    Takeaways',
+                        '      Important points',
+                        '      Action items'
+                    ].join('\n');
+
+                    latestMindMapText = safeMindmap;
+
+                    content.innerHTML = '<pre class="mermaid">' + safeMindmap + '</pre>';
+                    await window.mermaid.run({ querySelector: '.mermaid' });
+                }
+
+                mindMapGenerated = true;
+                btn.textContent = 'Hide Mind Map';
+                btn.disabled = false;
+                
+                // Show download button
+                document.getElementById('downloadMindMapBtn').style.display = 'inline-block';
+                
+                btn.onclick = function() {
+                    if (container.style.display === 'none') {
+                        container.style.display = 'block';
+                        btn.textContent = 'Hide Mind Map';
+                    } else {
+                        container.style.display = 'none';
+                        btn.textContent = 'Show Mind Map';
+                    }
+                };
+
+            } catch (err) {
+                console.error('Mind map generation error:', err);
+                loading.style.display = 'none';
+                error.style.display = 'block';
+                error.textContent = 'Error: ' + err.message + '. Please try again.';
+                btn.disabled = false;
+                btn.textContent = 'Retry Mind Map';
+            }
+        }
+
+        function downloadMindMap() {
+            try {
+                // Get the SVG element from the rendered mind map
+                const svgElement = document.querySelector('#mindmap-content svg');
+                
+                if (!svgElement) {
+                    alert('No mind map to download. Please generate one first.');
+                    return;
+                }
+
+                // Clone the SVG to avoid modifying the original
+                const clonedSvg = svgElement.cloneNode(true);
+                
+                // Add XML namespace if not present
+                clonedSvg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+                
+                // Get SVG dimensions
+                const bbox = svgElement.getBBox();
+                clonedSvg.setAttribute('viewBox', `${bbox.x} ${bbox.y} ${bbox.width} ${bbox.height}`);
+                
+                // Serialize the SVG
+                const serializer = new XMLSerializer();
+                const svgString = serializer.serializeToString(clonedSvg);
+                
+                // Create a blob from the SVG string
+                const blob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
+                
+                // Create download link
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                const title = document.getElementById('videoTitle').textContent || 'mindmap';
+                const filename = 'mindmap_' + title.substring(0, 30).replace(/[^a-z0-9]/gi, '_') + '.svg';
+                
+                link.href = url;
+                link.download = filename;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                // Clean up
+                URL.revokeObjectURL(url);
+                
+                // Visual feedback
+                const btn = document.getElementById('downloadMindMapBtn');
+                const originalText = btn.textContent;
+                btn.textContent = '✓ Downloaded';
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                }, 2000);
+                
+            } catch (err) {
+                console.error('Download error:', err);
+                alert('Error downloading mind map: ' + err.message);
+            }
+        }
+
+        async function generateQuiz() {
+            const btn = document.getElementById('generateQuizBtn');
+            const loading = document.getElementById('quizLoading');
+            const error = document.getElementById('quizError');
+            const list = document.getElementById('quizList');
+            const retryBtn = document.getElementById('retryQuizBtn');
+            const quizMeta = document.getElementById('quizMeta');
+            const count = parseInt(document.getElementById('quizCount').value || '5', 10);
+            const text = document.getElementById('transcriptBox').textContent.trim();
+            const title = document.getElementById('videoTitle').textContent || 'Video';
+
+            if (!text || text.length < 120) {
+                error.style.display = 'block';
+                error.textContent = 'Transcript is too short to generate quiz questions.';
+                quizMeta.style.display = 'none';
+                retryBtn.style.display = 'none';
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = 'Generating...';
+            loading.style.display = 'block';
+            error.style.display = 'none';
+            list.innerHTML = '';
+            quizMeta.style.display = 'none';
+            retryBtn.style.display = 'none';
+
+            try {
+                const response = await fetch('/api/generate-quiz', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        text: text,
+                        title: title,
+                        num_questions: count,
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Failed to generate quiz');
+                }
+
+                currentQuizQuestions = data.questions || [];
+                renderQuiz(currentQuizQuestions);
+            } catch (err) {
+                console.error('Quiz generation error:', err);
+                error.style.display = 'block';
+                error.textContent = 'Error: ' + err.message + '. Please try again.';
+            } finally {
+                loading.style.display = 'none';
+                btn.disabled = false;
+                btn.textContent = 'Generate Quiz';
+            }
+        }
+
+        function renderQuiz(questions) {
+            const list = document.getElementById('quizList');
+            const retryBtn = document.getElementById('retryQuizBtn');
+            const quizMeta = document.getElementById('quizMeta');
+            list.innerHTML = '';
+            quizScore = 0;
+            quizAnswered = 0;
+            currentQuizIndex = 0;
+
+            if (!questions || questions.length === 0) {
+                list.innerHTML = '<div class="quiz-status">No questions generated.</div>';
+                quizMeta.style.display = 'none';
+                retryBtn.style.display = 'none';
+                return;
+            }
+
+            quizMeta.style.display = 'flex';
+            retryBtn.style.display = 'inline-block';
+            updateQuizScore();
+
+            renderCurrentQuizQuestion();
+        }
+
+        function renderCurrentQuizQuestion() {
+            const list = document.getElementById('quizList');
+            const questions = currentQuizQuestions;
+            list.innerHTML = '';
+
+            if (!questions || questions.length === 0 || currentQuizIndex >= questions.length) {
+                list.innerHTML = '<div class="quiz-status">Quiz complete. Review your score or retry.</div>';
+                updateQuizScore();
+                return;
+            }
+
+            const letters = ['a', 'b', 'c', 'd'];
+
+            const questionObj = questions[currentQuizIndex];
+            const item = document.createElement('div');
+            item.className = 'quiz-item';
+            item.setAttribute('data-correct-index', String(questionObj.correct_index));
+            item.setAttribute('data-answered', 'false');
+
+            const title = document.createElement('h3');
+            title.textContent = 'Q' + (currentQuizIndex + 1) + '. ' + questionObj.question;
+            item.appendChild(title);
+
+            const optionsWrap = document.createElement('div');
+            optionsWrap.className = 'quiz-options';
+
+            (questionObj.options || []).forEach(function(optionText, optionIndex) {
+                const option = document.createElement('button');
+                option.type = 'button';
+                option.className = 'quiz-option';
+                option.textContent = letters[optionIndex] + '. ' + optionText;
+                option.setAttribute('data-option-index', String(optionIndex));
+                option.addEventListener('click', function() {
+                    handleQuizSelect(item, optionIndex);
+                });
+                optionsWrap.appendChild(option);
+            });
+
+            item.appendChild(optionsWrap);
+
+            const status = document.createElement('div');
+            status.className = 'quiz-status';
+            status.textContent = 'Select an option';
+            item.appendChild(status);
+
+            list.appendChild(item);
+            updateQuizScore();
+        }
+
+        function updateQuizScore() {
+            const scoreEl = document.getElementById('quizScore');
+            const progressEl = document.getElementById('quizProgress');
+            const total = currentQuizQuestions.length;
+            const done = quizAnswered >= total && total > 0;
+            scoreEl.textContent = done
+                ? 'Final Score: ' + quizScore + ' / ' + total
+                : 'Score: ' + quizScore + ' / ' + total;
+
+            if (progressEl) {
+                const shownIndex = done ? total : Math.min(currentQuizIndex + 1, total);
+                progressEl.textContent = 'Question ' + shownIndex + ' / ' + total;
+            }
+        }
+
+        function retryQuiz() {
+            if (!currentQuizQuestions || currentQuizQuestions.length === 0) {
+                return;
+            }
+            renderQuiz(currentQuizQuestions);
+        }
+
+        function handleQuizSelect(questionEl, selectedIndex) {
+            if (questionEl.getAttribute('data-answered') === 'true') {
+                return;
+            }
+
+            const correctIndex = parseInt(questionEl.getAttribute('data-correct-index') || '0', 10);
+            const options = questionEl.querySelectorAll('.quiz-option');
+            const status = questionEl.querySelector('.quiz-status');
+
+            options.forEach(function(optionEl, idx) {
+                optionEl.disabled = true;
+                if (idx === correctIndex) {
+                    optionEl.classList.add('correct');
+                } else {
+                    optionEl.classList.add('wrong');
+                }
+            });
+
+            if (selectedIndex === correctIndex) {
+                status.textContent = '✅ Correct answer';
+                status.style.color = 'var(--success)';
+                quizScore += 1;
+            } else {
+                status.textContent = '❌ Wrong answer (correct option highlighted in green)';
+                status.style.color = 'var(--danger)';
+            }
+
+            questionEl.setAttribute('data-answered', 'true');
+            quizAnswered += 1;
+            updateQuizScore();
+
+            if (currentQuizIndex < currentQuizQuestions.length - 1) {
+                setTimeout(function() {
+                    currentQuizIndex += 1;
+                    renderCurrentQuizQuestion();
+                }, 700);
+            } else {
+                setTimeout(function() {
+                    const statusEl = document.querySelector('#quizList .quiz-status');
+                    if (statusEl) {
+                        statusEl.textContent = '✅ Quiz complete';
+                        statusEl.style.color = 'var(--success)';
+                    }
+                    updateQuizScore();
+                }, 700);
+            }
+        }
+    </script>
+</body>
+
+</html>

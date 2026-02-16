@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results — YouTube Summarizer</title>
+    <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ 
+            startOnLoad: false,
+            theme: document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default',
+            mindmap: {
+                padding: 20,
+                maxNodeWidth: 200
+            }
+        });
+        window.mermaid = mermaid;
+    </script>
+    <link rel="stylesheet" href="/static/shared.css">
+    <link rel="stylesheet" href="/static/mindmap.css">
+    <script src="/static/global.js"></script>
+</head>
+
+<body>
+    <div class="bubbles">
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <nav>
+        <a href="/" class="brand">YouTube Summarizer</a>
+        <button class="theme-toggle" id="themeToggle" title="Toggle theme">
+            <span class="theme-icon sun">☀️</span>
+            <span class="theme-icon moon">🌙</span>
+        </button>
+    </nav>
+    <main>
+        <h1>Summary Results</h1>
+        <div class="meta">
+            <span class="chip">{{ '⚡ Transcript' if source == 'transcript' else '🎧 Audio' }}</span>
+            <span class="chip">{{ percentage }}% summary</span>
+        </div>
+        <div class="stats-row">
+            <div class="stat">
+                <div class="stat-num">{{ text.split()|length }}</div>
+                <div class="stat-label">Total words</div>
+            </div>
+            <div class="stat">
+                <div class="stat-num">{{ summary.split()|length }}</div>
+                <div class="stat-label">Summary words</div>
+            </div>
+            <div class="stat">
+                <div class="stat-num">{{ "%.1f"|format((summary.split()|length / text.split()|length * 100) if
+                    text.split()|length > 0 else 0) }}%</div>
+                <div class="stat-label">Compression</div>
+            </div>
+        </div>
+        <div class="section">
+            <div class="section-head">
+                <h2>Summary</h2><button class="btn-sm" onclick="copy('summary',this)">Copy</button>
+            </div>
+            <div class="content-box" id="summary">{{ summary }}</div>
+        </div>
+        <div class="section">
+            <div class="section-head">
+                <h2>Visual Mind Map</h2>
+                <div class="mindmap-actions">
+                    <button class="btn-sm" id="generateMindMapBtn" onclick="generateMindMap()">Generate Mind Map</button>
+                    <button class="btn-sm" id="downloadMindMapBtn" onclick="downloadMindMap()" style="display: none;">Download SVG</button>
+                </div>
+            </div>
+            <div class="content-box" id="mindmap-container" style="display: none;">
+                <div id="mindmap-loading" class="mindmap-loading">
+                    <div class="spinner"></div>
+                    <p>Generating mind map...</p>
+                </div>
+                <div id="mindmap-error" class="mindmap-error">
+                </div>
+                <div id="mindmap-content" class="mindmap-content">
+                </div>
+            </div>
+        </div>
+        <div class="section">
+            <div class="section-head">
+                <h2>Transcript</h2><button class="btn-sm" onclick="copy('transcript',this)">Copy</button>
+            </div>
+            <div class="content-box" id="transcript">{{ text }}</div>
+        </div>
+        <div class="actions">
+            <a href="/" class="btn-primary">New Summary</a>
+            <button class="btn-secondary" onclick="downloadPDF()">Download PDF</button>
+        </div>
+    </main>
+    <script>
+        function copy(id, btn) { navigator.clipboard.writeText(document.getElementById(id).textContent).then(function () { var o = btn.textContent; btn.textContent = 'Copied'; btn.classList.add('done'); setTimeout(function () { btn.textContent = o; btn.classList.remove('done'); }, 1500); }); }
+        function downloadPDF() { var jsPDF = window.jspdf.jsPDF; var doc = new jsPDF(); doc.setFont("Courier", "normal"); doc.setFontSize(11); var m = 15, y = m; function add(t, c) { doc.setFont(undefined, "bold"); doc.text(t, m, y); y += 6; doc.setFont(undefined, "normal"); var lines = doc.splitTextToSize(c, 180); for (var i = 0; i < lines.length; i++) { if (y > 280) { doc.addPage(); y = m; } doc.text(lines[i], m, y); y += 5; } y += 6; } add("YouTube Video Summary", ""); add("URL:", "{{url}}"); add("Summary Length:", "{{percentage}}%"); add("Date:", new Date().toLocaleString()); add("Summary", document.getElementById('summary').textContent.trim()); add("Transcript", document.getElementById('transcript').textContent.trim()); doc.save('summary_' + new Date().toISOString().split('T')[0] + '.pdf'); }
+
+        let mindMapGenerated = false;
+        
+        async function generateMindMap() {
+            if (mindMapGenerated) {
+                // Already generated, just show it
+                document.getElementById('mindmap-container').style.display = 'block';
+                return;
+            }
+
+            const btn = document.getElementById('generateMindMapBtn');
+            const container = document.getElementById('mindmap-container');
+            const loading = document.getElementById('mindmap-loading');
+            const error = document.getElementById('mindmap-error');
+            const content = document.getElementById('mindmap-content');
+            
+            // Show container and loading state
+            container.style.display = 'block';
+            loading.style.display = 'block';
+            error.style.display = 'none';
+            content.style.display = 'none';
+            btn.disabled = true;
+            btn.textContent = 'Generating...';
+
+            try {
+                const text = document.getElementById('transcript').textContent.trim();
+                const title = document.querySelector('h1').textContent || 'Video Concept';
+                
+                const response = await fetch('/api/generate-mindmap', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ text: text, title: title })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Failed to generate mind map');
+                }
+
+                // Render the mind map using Mermaid
+                loading.style.display = 'none';
+                content.style.display = 'flex';
+                content.innerHTML = '<pre class="mermaid">' + data.mindmap + '</pre>';
+
+                try {
+                    await window.mermaid.run({
+                        querySelector: '.mermaid'
+                    });
+                } catch (mermaidError) {
+                    console.error('Mermaid rendering error:', mermaidError);
+
+                    const fallbackTitle = (document.querySelector('h1').textContent || 'Video Summary')
+                        .replace(/[^a-zA-Z0-9 ]/g, ' ')
+                        .trim()
+                        .slice(0, 30) || 'Video Summary';
+
+                    const safeMindmap = [
+                        'mindmap',
+                        `  root((${fallbackTitle}))`,
+                        '    Overview',
+                        '      Main ideas',
+                        '      Key details',
+                        '    Takeaways',
+                        '      Important points',
+                        '      Action items'
+                    ].join('\n');
+
+                    content.innerHTML = '<pre class="mermaid">' + safeMindmap + '</pre>';
+                    await window.mermaid.run({ querySelector: '.mermaid' });
+                }
+
+                mindMapGenerated = true;
+                btn.textContent = 'Hide Mind Map';
+                
+                // Show download button
+                document.getElementById('downloadMindMapBtn').style.display = 'inline-block';
+                
+                btn.onclick = function() {
+                    if (container.style.display === 'none') {
+                        container.style.display = 'block';
+                        btn.textContent = 'Hide Mind Map';
+                    } else {
+                        container.style.display = 'none';
+                        btn.textContent = 'Show Mind Map';
+                    }
+                };
+
+            } catch (err) {
+                console.error('Mind map generation error:', err);
+                loading.style.display = 'none';
+                error.style.display = 'block';
+                error.textContent = 'Error: ' + err.message + '. Please try again.';
+                btn.disabled = false;
+                btn.textContent = 'Retry Mind Map';
+            }
+        }
+
+        function downloadMindMap() {
+            try {
+                // Get the SVG element from the rendered mind map
+                const svgElement = document.querySelector('#mindmap-content svg');
+                
+                if (!svgElement) {
+                    alert('No mind map to download. Please generate one first.');
+                    return;
+                }
+
+                // Clone the SVG to avoid modifying the original
+                const clonedSvg = svgElement.cloneNode(true);
+                
+                // Add XML namespace if not present
+                clonedSvg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+                
+                // Get SVG dimensions
+                const bbox = svgElement.getBBox();
+                clonedSvg.setAttribute('viewBox', `${bbox.x} ${bbox.y} ${bbox.width} ${bbox.height}`);
+                
+                // Serialize the SVG
+                const serializer = new XMLSerializer();
+                const svgString = serializer.serializeToString(clonedSvg);
+                
+                // Create a blob from the SVG string
+                const blob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
+                
+                // Create download link
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                const title = document.querySelector('h1').textContent || 'mindmap';
+                const filename = 'mindmap_' + title.substring(0, 30).replace(/[^a-z0-9]/gi, '_') + '.svg';
+                
+                link.href = url;
+                link.download = filename;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                // Clean up
+                URL.revokeObjectURL(url);
+                
+                // Visual feedback
+                const btn = document.getElementById('downloadMindMapBtn');
+                const originalText = btn.textContent;
+                btn.textContent = '✓ Downloaded';
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                }, 2000);
+                
+            } catch (err) {
+                console.error('Download error:', err);
+                alert('Error downloading mind map: ' + err.message);
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,227 @@
+/* ── Floating Summary Panel ─── injected into YouTube pages ── */
+
+#yt-summarizer-panel {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  width: 360px;
+  max-height: calc(100vh - 120px);
+  z-index: 99999;
+  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 16px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.12), 0 2px 12px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: ytsPanelSlideIn 0.4s ease-out;
+}
+
+@keyframes ytsPanelSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+#yt-summarizer-panel.minimized {
+  width: 52px;
+  height: 52px;
+  max-height: 52px;
+  border-radius: 50%;
+  cursor: pointer;
+  top: 80px;
+  right: 20px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(59,130,246,0.35);
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+}
+
+#yt-summarizer-panel.minimized .yts-body { display: none; }
+
+#yt-summarizer-panel.minimized .yts-header { display: none; }
+
+#yt-summarizer-panel.minimized::after {
+  content: '📝';
+  font-size: 22px;
+}
+
+/* ── Header ── */
+.yts-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  color: white;
+}
+
+.yts-header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.yts-header h3 {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.yts-header-btns {
+  display: flex;
+  gap: 6px;
+}
+
+.yts-header-btns button {
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: rgba(255,255,255,0.2);
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.yts-header-btns button:hover {
+  background: rgba(255,255,255,0.35);
+}
+
+/* ── Body ── */
+.yts-body {
+  padding: 14px 16px;
+  overflow-y: auto;
+  max-height: calc(100vh - 200px);
+}
+
+.yts-body::-webkit-scrollbar {
+  width: 4px;
+}
+
+.yts-body::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.12);
+  border-radius: 4px;
+}
+
+/* ── Stats ── */
+.yts-stats {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.yts-stat {
+  flex: 1;
+  background: rgba(59,130,246,0.06);
+  border-radius: 10px;
+  padding: 10px 8px;
+  text-align: center;
+}
+
+.yts-stat-num {
+  font-size: 16px;
+  font-weight: 700;
+  color: #3b82f6;
+}
+
+.yts-stat-label {
+  font-size: 10px;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+/* ── Title ── */
+.yts-video-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+
+/* ── Summary Text ── */
+.yts-summary-text {
+  font-size: 13px;
+  line-height: 1.7;
+  color: #374151;
+  white-space: pre-wrap;
+}
+
+/* ── Actions ── */
+.yts-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(0,0,0,0.06);
+}
+
+.yts-action-btn {
+  flex: 1;
+  padding: 8px 6px;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: inherit;
+  border: 1px solid rgba(59,130,246,0.15);
+  background: rgba(59,130,246,0.05);
+  color: #3b82f6;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.yts-action-btn:hover {
+  background: rgba(59,130,246,0.12);
+}
+
+/* ── Quick Summarize Button (injected near YouTube player) ── */
+#yts-quick-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: white;
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(59,130,246,0.3);
+  transition: all 0.2s;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+#yts-quick-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(59,130,246,0.4);
+}
+
+#yts-quick-btn:disabled {
+  background: #94a3b8;
+  cursor: wait;
+  transform: none;
+  box-shadow: none;
+}
+
+/* ── Draggable handle indicator ── */
+.yts-header {
+  cursor: move;
+}

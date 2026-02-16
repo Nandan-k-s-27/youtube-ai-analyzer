@@ -1,0 +1,48 @@
+/* ── Mind Map Styles ── */
+#mindmap-container {
+    background: var(--bg-card);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+#mindmap-content {
+    min-height: 400px;
+    background: var(--bg);
+    border-radius: 8px;
+    position: relative;
+}
+
+#mindmap-content .mermaid {
+    margin: 0;
+    padding: 0;
+}
+
+#mindmap-content svg {
+    max-width: 100%;
+    height: auto;
+}
+
+#mindmap-loading {
+    color: var(--text-secondary);
+}
+
+#mindmap-error {
+    background: var(--danger-bg);
+    border: 1px solid var(--danger-border);
+    color: var(--danger);
+}
+
+/* Mermaid theme adjustments */
+.mermaid {
+    background: transparent !important;
+}
+
+[data-theme="dark"] .mermaid .mindmap-node {
+    fill: var(--bg-card);
+    stroke: var(--accent);
+}
+
+[data-theme="dark"] .mermaid text {
+    fill: var(--text) !important;
+}

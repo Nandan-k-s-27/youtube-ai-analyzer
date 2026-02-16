@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <style>
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #161b22; stroke: #58a6ff; }
+      .play { fill: #58a6ff; }
+      .lines { stroke: #8b949e; }
+    }
+    @media (prefers-color-scheme: light) {
+      .bg { fill: #ffffff; stroke: #0071e3; }
+      .play { fill: #0071e3; }
+      .lines { stroke: #6e6e73; }
+    }
+  </style>
+  <rect class="bg" x="2" y="2" width="60" height="60" rx="14" stroke-width="3" />
+  <polygon class="play" points="24,18 24,46 46,32" />
+  <line class="lines" x1="16" y1="54" x2="32" y2="54" stroke-width="2.5" stroke-linecap="round" />
+  <line class="lines" x1="16" y1="58" x2="48" y2="58" stroke-width="2.5" stroke-linecap="round" />
+</svg>

@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Video Summarizer</title>
+    <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/shared.css">
+    <script src="/static/global.js"></script>
+    <style>
+        /* ── Index-only overrides ── */
+        main {
+            max-width: 540px;
+            margin: 80px auto 60px;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            text-align: center;
+            margin-bottom: 8px;
+            letter-spacing: -.8px;
+        }
+
+        .tagline {
+            text-align: center;
+            font-size: .95rem;
+            margin-bottom: 48px;
+            color: var(--accent2);
+            transition: color .4s;
+        }
+
+        /* Form card */
+        form {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: saturate(170%) blur(14px);
+            -webkit-backdrop-filter: saturate(170%) blur(14px);
+            border-radius: var(--radius-xl);
+            padding: 32px;
+            box-shadow: var(--shadow-md);
+            transition: background .4s, border-color .4s, box-shadow .4s;
+        }
+
+        form:hover {
+            box-shadow: var(--shadow-lg);
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        /* URL input */
+        input[type="url"] {
+            width: 100%;
+            padding: 14px 16px;
+            font-size: .95rem;
+            font-family: inherit;
+            border: 1.5px solid var(--border);
+            border-radius: 12px;
+            background: var(--bg-card);
+            color: var(--text);
+            transition: border-color .25s, box-shadow .25s, background .4s, color .4s, transform .2s;
+        }
+
+        input[type="url"]::placeholder {
+            color: var(--text-dim);
+            transition: color .4s;
+        }
+
+        input[type="url"]:hover {
+            border-color: var(--text-secondary);
+            transform: translateY(-1px);
+        }
+
+        input[type="url"]:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-glow), 0 4px 12px var(--accent-glow);
+            transform: translateY(-1px);
+        }
+
+        /* Slider */
+        .slider-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .slider-val {
+            font-size: 1rem;
+            font-weight: 700;
+            min-width: 44px;
+            text-align: right;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .slider-val.bump {
+            animation: valBump .2s ease;
+        }
+
+        @keyframes valBump {
+            0% {
+                transform: scale(1)
+            }
+
+            50% {
+                transform: scale(1.2)
+            }
+
+            100% {
+                transform: scale(1)
+            }
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            border-radius: 6px;
+            outline: none;
+            background: var(--border);
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, .18);
+            transition: transform .2s, box-shadow .2s;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 4px 14px var(--accent-glow);
+        }
+
+        input[type="range"]::-webkit-slider-thumb:active {
+            transform: scale(.95);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            border: none;
+            cursor: pointer;
+        }
+
+        /* Submit override — full-width */
+        form .btn-primary {
+            width: 100%;
+            padding: 16px;
+            font-size: 1rem;
+            border-radius: 12px;
+        }
+
+        form .btn-primary:disabled {
+            background: var(--text-dim);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+            filter: none;
+        }
+
+        /* Flash */
+        .flash-msg {
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-size: .88rem;
+            margin-bottom: 20px;
+            animation: pageEntry .3s ease;
+        }
+
+        .flash-msg.error {
+            background: var(--danger-bg);
+            color: var(--danger);
+            border: 1px solid var(--danger-border);
+            transition: all .4s;
+        }
+
+        @media (max-width:480px) {
+            main {
+                margin-top: 48px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            form {
+                padding: 24px 20px;
+                border-radius: var(--radius-lg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bubbles">
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+
+    <nav>
+        <span class="brand">YouTube Summarizer</span>
+        <button class="theme-toggle" id="themeToggle" title="Toggle theme">
+            <span class="theme-icon sun">☀️</span>
+            <span class="theme-icon moon">🌙</span>
+        </button>
+    </nav>
+
+    <main>
+        <h1>Summarize any YouTube video</h1>
+        <p class="tagline">Paste a link, choose the length, get your summary.</p>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="flash-msg {{ category }}">{{ message }}</div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        <form id="form" class="surface-glass" action="/process" method="POST">
+            <div class="form-group">
+                <label for="url">YouTube URL</label>
+                <input type="url" id="url" name="url" required placeholder="https://www.youtube.com/watch?v=..."
+                    autocomplete="off" />
+            </div>
+            <div class="form-group">
+                <div class="slider-row">
+                    <label for="percentage">Summary Length</label>
+                    <span class="slider-val" id="val">25%</span>
+                </div>
+                <input type="range" id="percentage" name="percentage" min="10" max="50" value="25">
+            </div>
+            <button type="submit" class="btn-primary" id="submitBtn">Generate Summary</button>
+        </form>
+    </main>
+
+    <script>
+        var sl = document.getElementById('percentage'), vl = document.getElementById('val');
+        function updateSlider() { vl.textContent = sl.value + '%'; vl.classList.remove('bump'); void vl.offsetWidth; vl.classList.add('bump'); }
+        sl.addEventListener('input', updateSlider);
+        updateSlider();
+
+        document.getElementById('form').addEventListener('submit', function (e) { 
+            var u = document.getElementById('url').value.trim(); 
+            if (!u || (u.indexOf('youtube.com') === -1 && u.indexOf('youtu.be') === -1)) { 
+                e.preventDefault(); 
+                alert('Enter a valid YouTube URL'); 
+                return; 
+            } 
+            document.getElementById('submitBtn').disabled = true; 
+            document.getElementById('submitBtn').textContent = 'Processing\u2026'; 
+        });
+        
+        // Auto-focus URL input on page load
+        document.getElementById('url').focus();
+        
+        // Keyboard shortcut: Ctrl/Cmd + Enter to submit
+        document.getElementById('url').addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                document.getElementById('form').requestSubmit();
+            }
+        });
+        
+        // Paste detection with validation
+        document.getElementById('url').addEventListener('paste', function(e) {
+            setTimeout(function() {
+                var url = document.getElementById('url').value.trim();
+                if (url && (url.includes('youtube.com') || url.includes('youtu.be'))) {
+                    document.getElementById('url').style.borderColor = 'var(--success, #10b981)';
+                    setTimeout(function() {
+                        document.getElementById('url').style.borderColor = '';
+                    }, 1000);
+                }
+            }, 100);
+        });
+        
+        if (window.history.replaceState) window.history.replaceState(null, null, window.location.href);
+    </script>
+</body>
+
+</html>
