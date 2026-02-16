@@ -37,6 +37,59 @@ class VideoProcessor:
         self.audio_path = "./temp_audio"
         self.chunks_path = "./temp_audio/chunks"
         self.cache = CacheManager()
+        self.ffmpeg_path = None
+        self.ffprobe_path = None
+        self.ffmpeg_available = self._configure_ffmpeg()
+
+    def _configure_ffmpeg(self) -> bool:
+        """Detect and configure ffmpeg/ffprobe paths for yt-dlp and pydub."""
+        ffmpeg_candidates = [
+            os.getenv("FFMPEG_BINARY"),
+            "/opt/render/project/src/.render/ffmpeg/ffmpeg",
+            shutil.which("ffmpeg"),
+        ]
+        ffprobe_candidates = [
+            os.getenv("FFPROBE_BINARY"),
+            "/opt/render/project/src/.render/ffmpeg/ffprobe",
+            shutil.which("ffprobe"),
+        ]
+
+        self.ffmpeg_path = next((path for path in ffmpeg_candidates if path and os.path.exists(path)), None)
+        self.ffprobe_path = next((path for path in ffprobe_candidates if path and os.path.exists(path)), None)
+
+        if not self.ffmpeg_path:
+            logger.warning(
+                "FFmpeg not found. Audio fallback may fail. "
+                "Install ffmpeg or configure Render build to include it."
+            )
+            return False
+
+        os.environ["FFMPEG_BINARY"] = self.ffmpeg_path
+        if self.ffprobe_path:
+            os.environ["FFPROBE_BINARY"] = self.ffprobe_path
+
+        try:
+            from pydub import AudioSegment
+            AudioSegment.converter = self.ffmpeg_path
+            if self.ffprobe_path:
+                AudioSegment.ffprobe = self.ffprobe_path
+        except Exception as exc:
+            logger.info("Pydub ffmpeg wiring skipped: %s", exc)
+
+        logger.info("FFmpeg configured: %s", self.ffmpeg_path)
+        return True
+
+    def _is_ffmpeg_missing_error(self, error_text: str) -> bool:
+        text = (error_text or "").lower()
+        return (
+            "ffmpeg" in text
+            and (
+                "not found" in text
+                or "is not installed" in text
+                or "postprocessing" in text
+                or "ffmpegextractaudio" in text
+            )
+        )
 
     # ── URL Parsing ──────────────────────────────────────────────────────
 
@@ -199,6 +252,12 @@ class VideoProcessor:
         try:
             import yt_dlp
 
+            if not self.ffmpeg_available:
+                raise Exception(
+                    "FFmpeg is not available on the server, so audio fallback cannot run. "
+                    "Deploy with render.yaml/build.sh so ffmpeg is installed."
+                )
+
             os.makedirs(self.audio_path, exist_ok=True)
             output_path = os.path.join(self.audio_path, "audio.%(ext)s")
             ydl_opts = {
@@ -208,6 +267,7 @@ class VideoProcessor:
                 'noplaylist': True,
                 'user_agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
                 'extractor_args': {'youtube': {'player_client': ['android', 'web']}},
+                'ffmpeg_location': os.path.dirname(self.ffmpeg_path) if self.ffmpeg_path else None,
                 'postprocessors': [{
                     'key': 'FFmpegExtractAudio',
                     'preferredcodec': 'wav',
@@ -751,14 +811,23 @@ Transcript:
                 logger.info("No transcript, falling back to audio processing")
                 transcript_source = "audio"
 
-                if progress_callback:
-                    progress_callback({'status': 'downloading_audio', 'progress': 45})
-                audio_path = self.download_audio_only(url)
+                try:
+                    if progress_callback:
+                        progress_callback({'status': 'downloading_audio', 'progress': 45})
+                    audio_path = self.download_audio_only(url)
 
-                if progress_callback:
-                    progress_callback({'status': 'transcribing_audio', 'progress': 65})
-                text = self.transcribe_audio(audio_path)
-                self.cleanup_files()
+                    if progress_callback:
+                        progress_callback({'status': 'transcribing_audio', 'progress': 65})
+                    text = self.transcribe_audio(audio_path)
+                    self.cleanup_files()
+                except Exception as audio_exc:
+                    audio_message = str(audio_exc)
+                    if self._is_ffmpeg_missing_error(audio_message):
+                        raise Exception(
+                            "Could not extract transcript and audio fallback failed because FFmpeg is missing. "
+                            "If you are on Render, use render.yaml/build.sh and redeploy."
+                        )
+                    raise Exception(f"Audio fallback failed: {audio_message}")
 
             if not text or len(text.strip()) < 20:
                 raise Exception("Could not extract any text from the video")
