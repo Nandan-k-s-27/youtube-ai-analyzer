@@ -1,7 +1,7 @@
 // ─── YouTube Content Script ──────────────────────────────────────────────────
 // Injects: Quick summarize button + Floating summary panel on YouTube video pages.
 
-const API_BASE = 'http://127.0.0.1:5000';
+const API_BASE = 'https://youtube-ai-analyzer.onrender.com';
 let panel = null;
 let isDragging = false;
 let dragOffset = { x: 0, y: 0 };

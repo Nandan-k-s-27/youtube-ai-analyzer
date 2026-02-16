@@ -1,7 +1,7 @@
 // ─── Background Service Worker ──────────────────────────────────────────────
 // Handles context menu and extension icon click badge updates.
 
-const API_BASE = 'http://127.0.0.1:5000';
+const API_BASE = 'https://youtube-ai-analyzer.onrender.com';
 
 // ─── On Install ─────────────────────────────────────────────────────────────
 chrome.runtime.onInstalled.addListener(() => {
