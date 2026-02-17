@@ -910,22 +910,28 @@ Transcript:
                 except Exception as audio_exc:
                     audio_message = str(audio_exc)
                     if self._is_ffmpeg_missing_error(audio_message):
-                        raise Exception(
-                            "Could not extract transcript and audio fallback failed because FFmpeg is missing. "
-                            "If you are on Render, use render.yaml/build.sh and redeploy."
-                        )
-                    if self._is_youtube_bot_error(audio_message):
-                        logger.warning("YouTube bot check blocked audio fallback. Using metadata fallback summary.")
+                        logger.warning("FFmpeg missing during audio fallback. Using metadata fallback summary.")
                         transcript_source = "metadata"
-                        text = f"{title}. {metadata.get('description', '')} {quick_summary}".strip()
+                        title_fallback = title if title and title.strip() else f"YouTube video {video_id}"
+                        description_fallback = metadata.get('description', '') if isinstance(metadata, dict) else ''
+                        quick_summary_fallback = quick_summary if quick_summary and quick_summary.strip() else (
+                            f"Could not access transcript/audio for {title_fallback}. Showing basic video details only."
+                        )
+                        text = f"{title_fallback}. {description_fallback} {quick_summary_fallback}".strip()
                         if progress_callback:
                             progress_callback({'status': 'using_metadata_fallback', 'progress': 75})
-                        
-                        if len(text.strip()) < 20:
-                            raise Exception(
-                                "YouTube bot/sign-in checks blocked audio fallback and no usable captions were found. "
-                                "Please try a different public video."
-                            )
+                    elif self._is_youtube_bot_error(audio_message):
+                        logger.warning("YouTube bot check blocked audio fallback. Using metadata fallback summary.")
+                        transcript_source = "metadata"
+                        title_fallback = title if title and title.strip() else f"YouTube video {video_id}"
+                        description_fallback = metadata.get('description', '') if isinstance(metadata, dict) else ''
+                        quick_summary_fallback = quick_summary if quick_summary and quick_summary.strip() else (
+                            f"Could not access transcript/audio for {title_fallback} due YouTube restrictions. "
+                            "Showing basic video details only."
+                        )
+                        text = f"{title_fallback}. {description_fallback} {quick_summary_fallback}".strip()
+                        if progress_callback:
+                            progress_callback({'status': 'using_metadata_fallback', 'progress': 75})
                     else:
                         raise Exception(f"Audio fallback failed: {audio_message}")
 
