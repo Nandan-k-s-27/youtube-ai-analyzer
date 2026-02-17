@@ -12,7 +12,7 @@ import logging
 from threading import Thread
 
 from flask import Flask, jsonify, request, render_template, flash, redirect, url_for
-from flask_socketio import SocketIO, emit
+from flask_socketio import SocketIO
 from dotenv import load_dotenv
 
 from video import VideoProcessor

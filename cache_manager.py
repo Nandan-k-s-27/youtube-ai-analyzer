@@ -116,6 +116,7 @@ class CacheManager:
                     WHERE cache_key = ?
                 """, (cache_key,))
                 conn.commit()
+                conn.close()
                 
                 logger.info(f"✅ Cache HIT for video: {video_id} (percentage: {percentage*100:.0f}%)")
                 

@@ -45,12 +45,10 @@ class VideoProcessor:
         """Detect and configure ffmpeg/ffprobe paths for yt-dlp and pydub."""
         ffmpeg_candidates = [
             os.getenv("FFMPEG_BINARY"),
-            "/opt/render/project/src/.render/ffmpeg/ffmpeg",
             shutil.which("ffmpeg"),
         ]
         ffprobe_candidates = [
             os.getenv("FFPROBE_BINARY"),
-            "/opt/render/project/src/.render/ffmpeg/ffprobe",
             shutil.which("ffprobe"),
         ]
 
@@ -60,7 +58,7 @@ class VideoProcessor:
         if not self.ffmpeg_path:
             logger.warning(
                 "FFmpeg not found. Audio fallback may fail. "
-                "Install ffmpeg or configure Render build to include it."
+                "Install ffmpeg or set FFMPEG_BINARY/FFPROBE_BINARY."
             )
             return False
 
@@ -342,7 +340,7 @@ class VideoProcessor:
             if not self.ffmpeg_available:
                 raise Exception(
                     "FFmpeg is not available on the server, so audio fallback cannot run. "
-                    "Deploy with render.yaml/build.sh so ffmpeg is installed."
+                    "Install ffmpeg locally or set FFMPEG_BINARY/FFPROBE_BINARY."
                 )
 
             os.makedirs(self.audio_path, exist_ok=True)
@@ -447,10 +445,6 @@ class VideoProcessor:
         api_key = os.getenv("GEMINI_API_KEY")
         if not api_key:
             raise Exception("GEMINI_API_KEY not found in environment")
-
-        # Debug: show which key is active (masked for security)
-        masked = api_key[:10] + "..." + api_key[-4:] if len(api_key) > 14 else api_key
-        print(f"ACTIVE KEY: {masked}")
 
         genai.configure(api_key=api_key)
 
@@ -926,7 +920,7 @@ Transcript:
                         title_fallback = title if title and title.strip() else f"YouTube video {video_id}"
                         description_fallback = metadata.get('description', '') if isinstance(metadata, dict) else ''
                         quick_summary_fallback = quick_summary if quick_summary and quick_summary.strip() else (
-                            f"Could not access transcript/audio for {title_fallback} due YouTube restrictions. "
+                            f"Could not access transcript/audio for {title_fallback} due to YouTube restrictions. "
                             "Showing basic video details only."
                         )
                         text = f"{title_fallback}. {description_fallback} {quick_summary_fallback}".strip()

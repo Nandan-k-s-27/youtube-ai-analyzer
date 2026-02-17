@@ -3,7 +3,6 @@ Reset cache database to implement new schema that respects percentage parameter.
 Run this once to clear old cache and recreate with proper structure.
 """
 import os
-import shutil
 
 cache_dir = "./cache"
 cache_db = "./cache/summaries.db"

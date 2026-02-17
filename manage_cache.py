@@ -5,8 +5,7 @@ Run this to view cache status and perform maintenance operations.
 """
 import os
 import sys
-from datetime import datetime
-from cache_manager import CacheManager, DEFAULT_CACHE_TTL_DAYS, MAX_CACHE_ENTRIES, MAX_DB_SIZE_MB
+from cache_manager import CacheManager, MAX_DB_SIZE_MB
 
 def print_header(text):
     print("\n" + "=" * 70)

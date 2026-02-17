@@ -1,0 +1,2017 @@
+%PDF-1.3
+%ºß¬à
+3 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 595.2799999999999727 841.8899999999999864]
+/Contents 4 0 R
+>>
+endobj
+4 0 obj
+<<
+/Length 6837
+>>
+stream
+0.5670000000000001 w
+0 G
+BT
+/F6 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 799.3703149606299121 Td
+(YouTube Video Summary) Tj
+ET
+BT
+/F6 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 751.1813385826771992 Td
+(URL:) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 734.1734645669291695 Td
+(https://youtu.be/IUqKuGNasdM?si=ZUR-D3Y8DkYijyTp) Tj
+ET
+BT
+/F6 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 702.9923622047243725 Td
+(Summary Length:) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 685.9844881889763428 Td
+(25%) Tj
+ET
+BT
+/F6 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 654.8033858267716596 Td
+(Date:) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 637.7955118110235162 Td
+(17/2/2026, 1:42:38 pm) Tj
+ET
+BT
+/F6 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 606.614409448818833 Td
+(Summary) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 589.6065354330708033 Td
+(This Java tutorial provides a fundamental introduction to classes and) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 575.4333070866141497 Td
+(objects, concepts that are central to Java's identity as an object-oriented) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 561.2600787401574962 Td
+(programming language. Even those familiar with Java will find this a useful) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 547.086850393700729 Td
+(refresher, as all Java code implicitly operates within a class structure.) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 532.9136220472440755 Td
+(This video serves as an introductory guide, covering the essential basics) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 518.7403937007873083 Td
+(required to understand and implement these foundational elements effectively.) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 490.3939370078739444 Td
+(A class functions as a blueprint or template from which objects are created.) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 476.2207086614172908 Td
+(Every Java program, including the standard `public class Main`, demonstrates) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 462.0474803149605805 Td
+(this underlying structure. The general form of a class involves the `class`) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 447.8742519685038701 Td
+(keyword, followed by a chosen name, with its operational body defined within) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 433.7010236220471597 Td
+(a pair of curly braces. Within these braces, a class can define two primary) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 419.5277952755905062 Td
+(components: variables and methods. Variables, when declared inside a class,) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 405.3545669291337958 Td
+(are termed instance variables; they can be of any data type and an unlimited) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 391.1813385826770855 Td
+(quantity. Similarly, a class can house multiple methods, each potentially) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 377.0081102362204319 Td
+(having different return types and parameters. A crucial design principle) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 362.8348818897637216 Td
+(emphasizes that a class should represent a single, cohesive entity; for) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 348.6616535433070112 Td
+(instance, a `Person` class would logically contain `name` and `age` but not) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 334.4884251968503008 Td
+(unrelated data like "weather," promoting cleaner and more maintainable code.) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 306.1419685039369369 Td
+(The tutorial demonstrates this by creating a `Pokemon` class, equipped with) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 291.9687401574802834 Td
+(`String name` and `int level` as instance variables, alongside an `attack\(\)`) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 277.7955118110235162 Td
+(method that prints the Pokémon's name followed by "attack." With this) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 263.6222834645668627 Td
+(blueprint, objects—which are concrete instances of the class—can be declared) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 249.4490551181102092 Td
+(and initialized. The process involves typing the class name, assigning an) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 235.2758267716534419 Td
+(object name, and then using the `new` keyword followed by the class name) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 221.1025984251967884 Td
+(\(with parentheses\) to allocate memory and instantiate the object. For) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 206.9293700787401349 Td
+(example: `Pokemon p1 = new Pokemon\(\);`. Java's assignment operates from right) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 192.7561417322833677 Td
+(to left, first creating the object in memory and then associating it with the) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 178.5829133858267141 Td
+(declared object variable. To interact with an object's internal data or) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 164.4096850393699469 Td
+(behavior, the dot operator \(`.`\) is used. This allows setting instance) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 150.2364566929132934 Td
+(variables \(e.g., `p1.name = "Pikachu";`\) or invoking methods \(e.g.,) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 136.0632283464566399 Td
+(`p1.attack\(\);`\). A fundamental principle of object-oriented programming is) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 121.8899999999998727 Td
+(encapsulation: each object maintains its own independent set of instance) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 107.7167716535432191 Td
+(variables, meaning changes to one object's data do not affect other objects) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 93.5435433070865656 Td
+(of the same class.) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 65.1970866141731449 Td
+(Constructors are specialized methods that are automatically invoked the) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 51.0238582677164914 Td
+(moment an object is created, primarily for initializing its instance) Tj
+ET
+endstream
+endobj
+5 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 595.2799999999999727 841.8899999999999864]
+/Contents 6 0 R
+>>
+endobj
+6 0 obj
+<<
+/Length 7316
+>>
+stream
+0.5670000000000001 w
+0 G
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 799.3703149606299121 Td
+(variables. A constructor has no return type and must share the exact name of) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 785.1970866141732586 Td
+(its class. For instance, a `Pokemon\(\)` constructor could automatically set) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 771.0238582677164914 Td
+(`level = 1` for every new `Pokemon` object, negating the need for manual) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 756.8506299212598378 Td
+(initialization post-creation. This ensures `p1.level` prints "1" immediately) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 742.6774015748030706 Td
+(after object creation, unlike the default integer value of zero. Constructors) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 728.5041732283464171 Td
+(can also be parameterized, allowing initial values to be passed in when an) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 714.3309448818897636 Td
+(object is instantiated. A parameterized constructor, such as `Pokemon\(String) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 700.15771653543311 Td
+(pName, int pLevel\)`, accepts arguments that are then assigned to the class's) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 685.9844881889763428 Td
+(corresponding instance variables. When creating an object with such a) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 671.8112598425196893 Td
+(constructor, the arguments are supplied within the parentheses: `Pokemon p1 =) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 657.6380314960629221 Td
+(new Pokemon\("Eevee", 25\);`. This powerful feature enables direct and) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 643.4648031496062686 Td
+(comprehensive initialization of an object's state upon its creation.) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 615.1183464566928478 Td
+(A crucial concept often encountered with parameterized constructors is the) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 600.9451181102361943 Td
+(`this` keyword. If a constructor's parameter names happen to be identical to) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 586.7718897637794271 Td
+(the class's instance variable names \(e.g., `String name` as both a parameter) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 572.5986614173227736 Td
+(and an instance variable\), Java's local variable precedence rules would mean) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 558.42543307086612 Td
+(the instance variable might not be assigned correctly. To explicitly) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 544.2522047244094665 Td
+(reference an instance variable belonging to the current object, the `this`) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 530.0789763779526993 Td
+(keyword is employed. Thus, `this.name = name;` clearly distinguishes between) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 515.9057480314959321 Td
+(the instance variable \(`this.name`\) and the parameter variable \(`name`\),) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 501.7325196850393354 Td
+(correctly assigning the parameter's value to the object's attribute. The) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 487.559291338582625 Td
+(`this` keyword can also be used to invoke other methods within the same) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 473.3860629921259147 Td
+(class, such as `this.attack\(\)`.) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 445.0396062992125508 Td
+(In summary, this tutorial effectively covered the creation of classes as) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 430.8663779527558404 Td
+(blueprints, the instantiation and manipulation of objects, the vital role of) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 416.69314960629913 Td
+(constructors in initial setup \(both default and parameterized\), and the) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 402.5199212598424765 Td
+(utility of the `this` keyword for unambiguous variable referencing. While) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 388.3466929133857661 Td
+(these basics form a strong foundation for Java development, the presenter) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 374.1734645669290558 Td
+(notes that this is merely an introduction, with plans for a subsequent video) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 360.0002362204724022 Td
+(to delve into more advanced applications and capabilities of classes and) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 345.8270078740156919 Td
+(objects. Viewers are encouraged to subscribe for future updates and to) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 331.6537795275589815 Td
+(explore the presenter's comprehensive Java tutorial playlist.) Tj
+ET
+BT
+/F6 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 300.4726771653542983 Td
+(Mind Map) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 283.4648031496062686 Td
+(mindmap) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 269.2915748031495013 Td
+(  root\(\(Java Classes Objects\)\)) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 255.1183464566928478 Td
+(    Introduction) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 240.9451181102361943 Td
+(      OOP Language Core) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 226.7718897637794271 Td
+(      Basic Concepts) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 212.5986614173227736 Td
+(      Part of Playlist) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 198.4254330708660063 Td
+(    Classes) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 184.2522047244093528 Td
+(      Blueprint Definition) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 170.0789763779526993 Td
+(      Structure Components) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 155.9057480314959321 Td
+(      Design Principle) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 141.7325196850392786 Td
+(    Objects) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 127.559291338582625 Td
+(      Class Instance) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 113.3860629921258578 Td
+(      Create Initialize) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 99.2128346456692043 Td
+(      Independent Data) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 85.0396062992125508 Td
+(    Constructors) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 70.8663779527557836 Td
+(      Special Method) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 56.69314960629913 Td
+(      Initial Values) Tj
+ET
+endstream
+endobj
+7 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 595.2799999999999727 841.8899999999999864]
+/Contents 8 0 R
+>>
+endobj
+8 0 obj
+<<
+/Length 8386
+>>
+stream
+0.5670000000000001 w
+0 G
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 799.3703149606299121 Td
+(      Parameterized Option) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 785.1970866141732586 Td
+(    This Keyword) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 771.0238582677164914 Td
+(      Resolve Ambiguity) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 756.8506299212598378 Td
+(      Explicit Reference) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 742.6774015748030706 Td
+(      Access Class Members) Tj
+ET
+BT
+/F6 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 711.4962992125983874 Td
+(Transcript) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 694.4884251968503577 Td
+(welcome back to another java tutorial where we've got a good one for you) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 680.3151968503937042 Td
+(we're going to be going over classes and objects now java being an) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 666.1419685039369369 Td
+(object-oriented programming language classes and objects are really the) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 651.9687401574802834 Td
+(essence of java they're what make java java so this video is going to serve) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 637.7955118110235162 Td
+(as an introduction but we are going to cover all the basics to get you on) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 623.6222834645668627 Td
+(your way if you're already familiar with java this will still be a good) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 609.4490551181102092 Td
+(refresher i do want to mention that this video is part of a larger java) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 595.2758267716535556 Td
+(tutorial playlist that i have i will link that down in the comments so if you) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 581.1025984251967884 Td
+(want to see more java tutorials go check that out so if you have done any) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 566.9293700787401349 Td
+(java development you've actually been using classes this whole time and you) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 552.7561417322833677 Td
+(might have not even known it if we take a look here every java program has) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 538.5829133858267141 Td
+(this public class main so you've actually been writing all your code inside) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 524.4096850393700606 Td
+(of a class so you might be asking what is a class well a class serves as a) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 510.2364566929133503 Td
+(blueprint to create objects and objects are an instance of a class if that's) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 496.0632283464566399 Td
+(confusing i don't blame you i think the best way to understand this is by) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 481.8899999999999295 Td
+(doing an example and explaining it as i go so let's take a look at some code) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 467.716771653543276 Td
+(all right so here we have the general form of a class you're going to have) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 453.5435433070865656 Td
+(the keyword class saying hey this is going to be a class that i wanted to) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 439.3703149606298552 Td
+(find and then you're going to have to give your class a name and then the) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 425.1970866141731449 Td
+(body of the class would live in between these two curly braces now there are) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 411.0238582677164914 Td
+(two things a class can have either variables or methods so here we define two) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 396.850629921259781 Td
+(variables which when they're in a class they're going to be called instance) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 382.6774015748030706 Td
+(variables now these can be really any variable type and you can have as many) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 368.5041732283464171 Td
+(as you want so the other thing you can have are methods so here we have an) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 354.3309448818897067 Td
+(example of two methods and you can have zero or more in a class so they can) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 340.1577165354329964 Td
+(be different return types they can have zero or more parameters etc one thing) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 325.9844881889763428 Td
+(to mention is that even though it's not enforced or anything by the language) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 311.8112598425195756 Td
+(a class should be defined as a single entity for example you could have a) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 297.6380314960629221 Td
+(class called person and it could have something like a name or an age but it) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 283.4648031496062686 Td
+(wouldn't make sense to put something like the weather or something in that) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 269.2915748031495013 Td
+(class that's a good way to write messy code and you don't want to do that so) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 255.1183464566928478 Td
+(if we go back to our method here let's go ahead and create a actual class so) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 240.9451181102361943 Td
+(i'm using intellij i'm going to go to file new java class and uh what do we) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 226.7718897637794271 Td
+(want to do here let's let's do something a little fun here let's uh let's) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 212.5986614173227736 Td
+(make a pokemon class all right so here we see uh public class pokemon and and) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 198.4254330708660063 Td
+(for this tutorial you don't need to worry about what this public is doing but) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 184.2522047244093528 Td
+(this is an empty pokemon class so let's write our instance variables here) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 170.0789763779526993 Td
+(let's uh let's give our pokemon a name and let's give it a level and what) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 155.9057480314959321 Td
+(kind of method should we give this uh let's write a method that doesn't) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 141.7325196850392786 Td
+(return anything called attack and in here we're just going to print out we'll) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 127.559291338582625 Td
+(say the name and then we'll just say attack now that we have this class) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 113.3860629921258578 Td
+(defined this class will be a blueprint for creating objects so how do we) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 99.2128346456692043 Td
+(declare and initialize objects well first you want to just type the class) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 85.0396062992125508 Td
+(name then you want to give your object a name and then you want to actually) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 70.8663779527557836 Td
+(create the object itself which uses the new keyword and the class name so in) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 56.69314960629913 Td
+(our case how would that look so we type pokemon [Music] which is the class) Tj
+ET
+endstream
+endobj
+9 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 595.2799999999999727 841.8899999999999864]
+/Contents 10 0 R
+>>
+endobj
+10 0 obj
+<<
+/Length 9052
+>>
+stream
+0.5670000000000001 w
+0 G
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 799.3703149606299121 Td
+(name and we have to give our object a name we'll just call it p1 equals new) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 785.1970866141732586 Td
+(pokemon so for now uh don't worry about what this parentheses mean we're) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 771.0238582677164914 Td
+(going to get into that so assignment in java works from right to left so) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 756.8506299212598378 Td
+(what's happening here is first we're creating this object here so java is) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 742.6774015748030706 Td
+(going into the memory and it's allocating space to create this object then) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 728.5041732283464171 Td
+(it's setting it equal to this pokemon variable so now if we ever want to) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 714.3309448818897636 Td
+(access anything in our pokemon object we use this p1 so how do we do that) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 700.15771653543311 Td
+(let's take a look so now if we want to set the name and the level for our) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 685.9844881889763428 Td
+(object we would do something like p1 and then we would use a period here) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 671.8112598425196893 Td
+(which is called the dot operator so we do dot name and then we give our) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 657.6380314960629221 Td
+(pokemon the name i feel like for the first one we got to go with pikachu and) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 643.4648031496062686 Td
+(then we got to give it give it a level so it'd be p1 dot level equals let's) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 629.291574803149615 Td
+(just say level 10. let's go ahead and print that out all right so let's go) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 615.1183464566928478 Td
+(ahead and run that and we see that it says pikachu 10 which is what we) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 600.9451181102361943 Td
+(expected all right so now we have one object but now you can create as many) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 586.7718897637794271 Td
+(objects as you want so let's go ahead and create another one let's call this) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 572.5986614173227736 Td
+(one p2 so let's give this one a name and a level all right so we have another) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 558.42543307086612 Td
+(one we named it evie and we gave it a level of 20. and then let's go ahead) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 544.2522047244094665 Td
+(and call the attack method so now if we run that we see that it says evie) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 530.0789763779526993 Td
+(attack and here we should actually go and add a space here so if we run that) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 515.9057480314959321 Td
+(we see that it's now properly formatted and it says ev attack one important) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 501.7325196850393354 Td
+(thing to note is that these objects have their own set of variables so p1) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 487.559291338582625 Td
+(gets its own name and its own level p2 gets its own name and its own level if) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 473.3860629921259147 Td
+(we change the variable for p1 it does not affect anything in p2 that's really) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 459.2128346456692611 Td
+(one of the fundamental principles of objects it's that variables and methods) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 445.0396062992125508 Td
+(are encapsulated within the object and changing the variable in one object) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 430.8663779527558404 Td
+(does not affect the variables in another object so that's really the basic) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 416.69314960629913 Td
+(idea of classes and objects the class is a blueprint for some kind of edit) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 402.5199212598424765 Td
+(entity in this case pokemon and then we use that class to create objects of) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 388.3466929133857661 Td
+(it which are have variables and methods defined of from that class all right) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 374.1734645669290558 Td
+(the next thing we're going to go over are constructors sometimes when you) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 360.0002362204724022 Td
+(create an object you want some sort of code to happen maybe you want some) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 345.8270078740156919 Td
+(variables to get set initially that's where constructors come into play these) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 331.6537795275589815 Td
+(are special methods that get invoked as soon as an object is created so if we) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 317.480551181102328 Td
+(go back to our pokemon class how that's going to look is it's going to be its) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 303.3073228346455608 Td
+(own method it's not going to have any return type and it's always going to be) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 289.1340944881889072 Td
+(the same name as the class so in this case it would just be pokemon we have) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 274.9608661417322537 Td
+(our parentheses and then we have the body here so say initially when we want) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 260.7876377952754865 Td
+(a pokemon to get created we automatically want every all of them to be set to) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 246.614409448818833 Td
+(level one so what we would do is we would just say level equals one so now) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 232.4411811023621794 Td
+(when an object pokemon is created this function gets called and the level) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 218.2679527559054122 Td
+(automatically gets set to one let's take a look at an example so let's go) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 204.0947244094487587 Td
+(ahead and get rid of pretty much all this here and let's go ahead and print) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 189.9214960629919915 Td
+(out the level so we see that we're going to print out p1.level now if we) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 175.748267716535338 Td
+(didn't have any constructor this integer always gets set to zero but since we) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 161.5750393700786844 Td
+(have that constructor where we set it to one we run the code and we see that) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 147.4018110236219172 Td
+(a1 gets printed now say we want uh the user to give us a name and a level how) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 133.2285826771652637 Td
+(would we do that well what we could do is we could add another constructor) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 119.0553543307086102 Td
+(that has parameters so let's go ahead and do that and then in the body of the) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 104.882125984251843 Td
+(method we'll just set our actual variables in the class equal to what gets) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 90.7088976377951894 Td
+(passed in as the parameters all right so let's go back to our main function) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 76.5356692913385359 Td
+(our main method now when i say method and function i'm using these) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 62.3624409448817687 Td
+(interchangeably in java they're called methods in other languages they might) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 48.1892125984251152 Td
+(be called functions but i'm referring to methods all right now let's go ahead) Tj
+ET
+endstream
+endobj
+11 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 595.2799999999999727 841.8899999999999864]
+/Contents 12 0 R
+>>
+endobj
+12 0 obj
+<<
+/Length 7382
+>>
+stream
+0.5670000000000001 w
+0 G
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 799.3703149606299121 Td
+(and create an object passing in arguments for our constructor so how that) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 785.1970866141732586 Td
+(would look like is we would just create an object like we normally would now) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 771.0238582677164914 Td
+(when we want to pass in variables to our constructor this is when remember) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 756.8506299212598378 Td
+(when i said we're going to talk about these parentheses later on well this is) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 742.6774015748030706 Td
+(that time so the arguments would actually get passed in into these) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 728.5041732283464171 Td
+(parentheses and this is what represents the constructor so let's go ahead and) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 714.3309448818897636 Td
+(pass in a name and a level so now this first argument refers back to this) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 700.15771653543311 Td
+(string p name and this level 25 refers to this intp level and then our name) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 685.9844881889763428 Td
+(and our level our instance variables get set to these arguments and uh and) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 671.8112598425196893 Td
+(yeah let's go ahead and print this out all right so initially we're just) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 657.6380314960629221 Td
+(printing out p1.level and then we're going to call p1.attack let's go ahead) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 643.4648031496062686 Td
+(and run that so we see that they're printed on the same line let's go ahead) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 629.291574803149615 Td
+(and give us a new line here so we see p1.level prints out 25 and then p1 dot) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 615.1183464566928478 Td
+(attack calls eevee attack so we see that the eevee and the 25 get set because) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 600.9451181102361943 Td
+(we passed these in to the constructor all right the last thing i want to talk) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 586.7718897637794271 Td
+(about is the this keyword say for some reason in our constructor we wanted to) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 572.5986614173227736 Td
+(call this string name and string level and then in here we want to set this) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 558.42543307086612 Td
+(name equal to name and level equal to level well you see how this gets kind) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 544.2522047244094665 Td
+(of weird here because uh name is the same as our instance variable name and) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 530.0789763779526993 Td
+(same with level so which one does it use in here well what it does is it) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 515.9057480314959321 Td
+(always uses the most local variable so in this case it would co it would use) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 501.7325196850393354 Td
+(the uh the arguments that get passed in so what's happening is name is just) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 487.559291338582625 Td
+(getting set back to name level is getting set to level none of these instance) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 473.3860629921259147 Td
+(variables are being used at all so how do we get around this well java has) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 459.2128346456692611 Td
+(the this keyword so what we do is we would just do this dot name and this dot) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 445.0396062992125508 Td
+(level so whenever you use the this keyword it's saying use the variables that) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 430.8663779527558404 Td
+(are actually defined in this class so this is just an explicit way of telling) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 416.69314960629913 Td
+(java that we want to use these variables and you can even use this for) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 402.5199212598424765 Td
+(methods as well so if we wanted for some reason we could actually call this) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 388.3466929133857661 Td
+(dot attack in the constructor all right that's going to wrap up this tutorial) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 374.1734645669290558 Td
+(just to recap we talked about creating classes creating an object class of) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 360.0002362204724022 Td
+(that type we went over constructors to initialize instance variables as well) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 345.8270078740156919 Td
+(as passing parameters to constructors finally we wrapped it up by talking) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 331.6537795275589815 Td
+(about the this keyword so we went over a ton in this video we got the basics) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 317.480551181102328 Td
+(of classes and objects down but honestly we've still only scratched the) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 303.3073228346455608 Td
+(surface with classes and objects i plan to do another video kind of a part) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 289.1340944881889072 Td
+(two to this where we go uh more in depth with what you can really do with) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 274.9608661417322537 Td
+(classes and objects that are very powerful so yeah that video should be) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 260.7876377952754865 Td
+(coming up make sure you guys subscribe to uh get a notification when that) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 246.614409448818833 Td
+(video gets released make sure you guys leave a like if you did like the video) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 232.4411811023621794 Td
+(and of course uh if you have any questions leave them down in the comments as) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 218.2679527559054122 Td
+(i mentioned i do have a java playlist that you can check out with videos that) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 204.0947244094487587 Td
+(are continuously being added to it but as always thank you guys so much for) Tj
+ET
+BT
+/F5 11 Tf
+12.6499999999999986 TL
+0 g
+42.5196850393700814 189.9214960629919915 Td
+(watching and i'll see you in the next [Music] video [Music] bye) Tj
+ET
+endstream
+endobj
+1 0 obj
+<</Type /Pages
+/Kids [3 0 R 5 0 R 7 0 R 9 0 R 11 0 R ]
+/Count 5
+>>
+endobj
+13 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+14 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+15 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-Oblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+16 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-BoldOblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+17 0 obj
+<<
+/Type /Font
+/BaseFont /Courier
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+18 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+19 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-Oblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+20 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-BoldOblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+21 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Roman
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+22 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+23 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Italic
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+24 0 obj
+<<
+/Type /Font
+/BaseFont /Times-BoldItalic
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+25 0 obj
+<<
+/Type /Font
+/BaseFont /ZapfDingbats
+/Subtype /Type1
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+26 0 obj
+<<
+/Type /Font
+/BaseFont /Symbol
+/Subtype /Type1
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+2 0 obj
+<<
+/ProcSet [/PDF /Text /ImageB /ImageC /ImageI]
+/Font <<
+/F1 13 0 R
+/F2 14 0 R
+/F3 15 0 R
+/F4 16 0 R
+/F5 17 0 R
+/F6 18 0 R
+/F7 19 0 R
+/F8 20 0 R
+/F9 21 0 R
+/F10 22 0 R
+/F11 23 0 R
+/F12 24 0 R
+/F13 25 0 R
+/F14 26 0 R
+>>
+/XObject <<
+>>
+>>
+endobj
+27 0 obj
+<<
+/Producer (jsPDF 2.5.1)
+/CreationDate (D:20260217134238+05'30')
+>>
+endobj
+28 0 obj
+<<
+/Type /Catalog
+/Pages 1 0 R
+/OpenAction [3 0 R /FitH null]
+/PageLayout /OneColumn
+>>
+endobj
+xref
+0 29
+0000000000 65535 f 
+0000039938 00000 n 
+0000041785 00000 n 
+0000000015 00000 n 
+0000000152 00000 n 
+0000007041 00000 n 
+0000007178 00000 n 
+0000014546 00000 n 
+0000014683 00000 n 
+0000023121 00000 n 
+0000023259 00000 n 
+0000032364 00000 n 
+0000032503 00000 n 
+0000040020 00000 n 
+0000040146 00000 n 
+0000040277 00000 n 
+0000040411 00000 n 
+0000040549 00000 n 
+0000040673 00000 n 
+0000040802 00000 n 
+0000040934 00000 n 
+0000041070 00000 n 
+0000041198 00000 n 
+0000041325 00000 n 
+0000041454 00000 n 
+0000041587 00000 n 
+0000041689 00000 n 
+0000042038 00000 n 
+0000042124 00000 n 
+trailer
+<<
+/Size 29
+/Root 28 0 R
+/Info 27 0 R
+/ID [ <462FAB24AA295CE0CC808DF362C8620F> <462FAB24AA295CE0CC808DF362C8620F> ]
+>>
+startxref
+42228
+%%EOF
