@@ -91,6 +91,14 @@ class VideoProcessor:
             )
         )
 
+    def _is_youtube_bot_error(self, error_text: str) -> bool:
+        text = (error_text or "").lower()
+        return (
+            "sign in to confirm you're not a bot" in text
+            or "--cookies-from-browser" in text
+            or "use --cookies" in text
+        )
+
     # ── URL Parsing ──────────────────────────────────────────────────────
 
     def get_video_id(self, url: str) -> str:
@@ -169,7 +177,54 @@ class VideoProcessor:
 
     # ── Transcript ───────────────────────────────────────────────────────
 
+    def _get_transcript_via_api(self, video_id: str) -> Optional[str]:
+        """Try fetching transcript via youtube-transcript-api first (more reliable on hosted envs)."""
+        try:
+            from youtube_transcript_api import YouTubeTranscriptApi
+
+            transcript_list = YouTubeTranscriptApi.list_transcripts(video_id)
+            transcript = None
+
+            for lang in ['en', 'en-US', 'en-GB']:
+                try:
+                    transcript = transcript_list.find_transcript([lang])
+                    break
+                except Exception:
+                    continue
+
+            if not transcript:
+                try:
+                    transcript = transcript_list.find_generated_transcript(['en', 'en-US', 'en-GB'])
+                except Exception:
+                    transcript = None
+
+            if not transcript:
+                try:
+                    transcript = next(iter(transcript_list), None)
+                except Exception:
+                    transcript = None
+
+            if not transcript:
+                return None
+
+            items = transcript.fetch()
+            full_text = ' '.join(item.get('text', '').strip() for item in items if item.get('text'))
+            full_text = ' '.join(full_text.split())
+
+            if len(full_text) > 50:
+                logger.info("Transcript fetched via transcript API: %d chars", len(full_text))
+                return full_text
+
+            return None
+        except Exception as exc:
+            logger.info("Transcript API lookup failed: %s", exc)
+            return None
+
     def get_transcript(self, video_id: str) -> Optional[str]:
+        transcript_api_text = self._get_transcript_via_api(video_id)
+        if transcript_api_text:
+            return transcript_api_text
+
         try:
             import yt_dlp
             import json
@@ -826,6 +881,11 @@ Transcript:
                         raise Exception(
                             "Could not extract transcript and audio fallback failed because FFmpeg is missing. "
                             "If you are on Render, use render.yaml/build.sh and redeploy."
+                        )
+                    if self._is_youtube_bot_error(audio_message):
+                        raise Exception(
+                            "This video is protected by YouTube bot/sign-in checks and blocked audio fallback on hosted servers. "
+                            "Try another video with captions, or run locally with authenticated yt-dlp cookies."
                         )
                     raise Exception(f"Audio fallback failed: {audio_message}")
 
