@@ -182,33 +182,65 @@ class VideoProcessor:
         try:
             from youtube_transcript_api import YouTubeTranscriptApi
 
-            transcript_list = YouTubeTranscriptApi.list_transcripts(video_id)
-            transcript = None
+            def _extract_text(items) -> str:
+                parts = []
+                for item in items:
+                    if isinstance(item, dict):
+                        snippet = (item.get('text') or '').strip()
+                    else:
+                        snippet = (getattr(item, 'text', '') or '').strip()
+                    if snippet:
+                        parts.append(snippet)
+                return ' '.join(parts)
 
-            for lang in ['en', 'en-US', 'en-GB']:
-                try:
-                    transcript = transcript_list.find_transcript([lang])
-                    break
-                except Exception:
-                    continue
+            full_text = ""
 
-            if not transcript:
+            # Newer API style: instance fetch(video_id, languages=[...])
+            try:
+                api = YouTubeTranscriptApi()
+                if hasattr(api, 'fetch'):
+                    items = api.fetch(video_id, languages=['en', 'en-US', 'en-GB'])
+                    full_text = _extract_text(items)
+            except Exception:
+                full_text = ""
+
+            # Older API style: list_transcripts + transcript.fetch()
+            if not full_text:
+                transcript_list = None
                 try:
-                    transcript = transcript_list.find_generated_transcript(['en', 'en-US', 'en-GB'])
+                    if hasattr(YouTubeTranscriptApi, 'list_transcripts'):
+                        transcript_list = YouTubeTranscriptApi.list_transcripts(video_id)
+                    elif 'api' in locals() and hasattr(api, 'list'):
+                        transcript_list = api.list(video_id)
                 except Exception:
+                    transcript_list = None
+
+                if transcript_list is not None:
                     transcript = None
 
-            if not transcript:
-                try:
-                    transcript = next(iter(transcript_list), None)
-                except Exception:
-                    transcript = None
+                    for lang in ['en', 'en-US', 'en-GB']:
+                        try:
+                            transcript = transcript_list.find_transcript([lang])
+                            break
+                        except Exception:
+                            continue
 
-            if not transcript:
-                return None
+                    if not transcript:
+                        try:
+                            transcript = transcript_list.find_generated_transcript(['en', 'en-US', 'en-GB'])
+                        except Exception:
+                            transcript = None
 
-            items = transcript.fetch()
-            full_text = ' '.join(item.get('text', '').strip() for item in items if item.get('text'))
+                    if not transcript:
+                        try:
+                            transcript = next(iter(transcript_list), None)
+                        except Exception:
+                            transcript = None
+
+                    if transcript:
+                        items = transcript.fetch()
+                        full_text = _extract_text(items)
+
             full_text = ' '.join(full_text.split())
 
             if len(full_text) > 50:
@@ -883,11 +915,19 @@ Transcript:
                             "If you are on Render, use render.yaml/build.sh and redeploy."
                         )
                     if self._is_youtube_bot_error(audio_message):
-                        raise Exception(
-                            "This video is protected by YouTube bot/sign-in checks and blocked audio fallback on hosted servers. "
-                            "Try another video with captions, or run locally with authenticated yt-dlp cookies."
-                        )
-                    raise Exception(f"Audio fallback failed: {audio_message}")
+                        logger.warning("YouTube bot check blocked audio fallback. Using metadata fallback summary.")
+                        transcript_source = "metadata"
+                        text = f"{title}. {metadata.get('description', '')} {quick_summary}".strip()
+                        if progress_callback:
+                            progress_callback({'status': 'using_metadata_fallback', 'progress': 75})
+                        
+                        if len(text.strip()) < 20:
+                            raise Exception(
+                                "YouTube bot/sign-in checks blocked audio fallback and no usable captions were found. "
+                                "Please try a different public video."
+                            )
+                    else:
+                        raise Exception(f"Audio fallback failed: {audio_message}")
 
             if not text or len(text.strip()) < 20:
                 raise Exception("Could not extract any text from the video")
