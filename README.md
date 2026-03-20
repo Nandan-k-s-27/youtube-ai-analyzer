@@ -1,3 +1,7 @@
+
+
+https://github.com/user-attachments/assets/548e9a03-04ea-47f7-997a-44778592afe1
+
 # YouTube AI Analyzer
 
 An end-to-end YouTube analysis platform that converts video content into:
@@ -12,10 +16,6 @@ The project includes:
 - a Chrome extension for one-click summarization from YouTube pages
 - transcript-first extraction with robust fallbacks
 - SQLite-based caching for faster repeat requests
-
-## Demo Video
-
-Full demo video (recently added): [Screen_shots/demo_video.mp4](Screen_shots/demo_video.mp4)
 
 ## What It Does
 
